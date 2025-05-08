@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en" dir="ltr">
+  <head>
+    {% load static %}
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+  </head>
+  <body>
+    <div class="center">
+      <div class="logo" style="text-align:center">
+        <img src="{% static 'logo.jpg'%}" width="200px" height="200px" alt="logo">
+      </div>
+      <h1>Register</h1>
+      <span>Register your account</span>
+
+      {% if messages %}
+        {% for message in messages%}
+          {% if message.tags == "error" %}
+            <center><h4  style="color: firebrick;">{{message}}</h4></center>
+          {% else %}
+            <center><h4 style="color: green;">{{message}}</h4></center>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST" id="registerForm">
+        {% csrf_token %}
+      
+        <div class="txt_field">
+            <input type="text" required name="first_name" id="first_name">
+            <span></span>
+            <label>First Name</label>
+          </div>
+
+          <div class="txt_field">
+            <input type="text" required name="last_name" id="last_name">
+            <span></span>
+            <label>Last Name</label>
+          </div>
+
+        <div class="txt_field">
+          <input type="text" required name="username" id="username">
+          <span></span>
+          <label>Username</label>
+        </div>
+
+        <div class="txt_field">
+            <input type="email" required name="email" id="email">
+            <span></span>
+            <label>Email</label>
+          </div>
+
+        <div class="txt_field">
+          <input type="password" required name="password" id="password">
+          <span></span>
+          <label>Password</label>
+        </div>    
+
+        <!-- <div class="pass">Forgot Password?</div> -->
+        <input type="submit" value="Register New Account">
+        <div class="signup_link">
+          Already have an account? <a href="{% url 'login' %}">Login</a>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document.getElementById("registerForm").addEventListener("submit", function(event) {
+          let firstName = document.getElementById("first_name").value.trim();
+          let lastName = document.getElementById("last_name").value.trim();
+          let username = document.getElementById("username").value.trim();
+          let email = document.getElementById("email").value.trim();
+          let password = document.getElementById("password").value;
+
+          // Email pattern
+          let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+
+          // Check if fields are empty
+          if (firstName === "" || lastName === "" || username === "" || email === "" || password === "") {
+              alert("Please fill out all fields.");
+              event.preventDefault(); // Stop form submission
+              return;
+          }
+
+          // Check email validity
+          if (!email.match(emailPattern)) {
+              alert("Please enter a valid email address.");
+              event.preventDefault();
+              return;
+          }
+
+          // Check password length
+          if (password.length < 6) {
+              alert("Password must be at least 6 characters long.");
+              event.preventDefault();
+              return;
+          }
+      });
+  </script>
+  </body>
+</html>
